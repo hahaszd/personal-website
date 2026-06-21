@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // 站点 URL：本期使用 Vercel 默认域名占位，接入自定义域名后改这里即可。
 // canonical / sitemap / RSS / OG 都依赖 `site`，部署后请更新为真实地址。
-const SITE_URL = 'https://example.vercel.app';
+const SITE_URL = 'https://personal-website-xi-nine-13.vercel.app';
 
 // https://astro.build/config
 export default defineConfig({
