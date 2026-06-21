@@ -1,4 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "export GIT_TERMINAL_PROMPT=0 && git config url.\"https://x-access-token:$GH_PAT@github.com/\".insteadOf \"https://github.com/\" && git submodule sync --recursive && git submodule update --init --recursive --force && npm install"
+  "installCommand": "export GIT_TERMINAL_PROMPT=0 && git config --global url.\"https://x-access-token:$GH_PAT@github.com/\".insteadOf \"https://github.com/\" && git submodule sync --recursive && git submodule update --init --recursive --force && npm install"
 }
