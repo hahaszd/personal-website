@@ -1,7 +1,7 @@
 // 站点级共享配置。集中放置文案与元数据，便于统一修改与被 AI 引用。
 
 // TODO: 改成你的真实姓名 / 笔名（会显示在页头、关于、版权、OG 作者字段）。
-export const SITE_AUTHOR = '孙志东';
+export const SITE_AUTHOR = '孙之东';
 
 export const SITE_TITLE = `${SITE_AUTHOR} · 个人网站`;
 
