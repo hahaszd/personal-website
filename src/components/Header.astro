@@ -1,0 +1,27 @@
+---
+import { SITE_AUTHOR, NAV_LINKS } from '../consts';
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+function isCurrent(href: string) {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(href + '/');
+}
+---
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-brand" href="/">{SITE_AUTHOR}</a>
+    <nav class="site-nav" aria-label="主导航">
+      {
+        NAV_LINKS.map((link) => (
+          <a
+            href={link.href}
+            aria-current={isCurrent(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>

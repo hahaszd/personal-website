@@ -1,0 +1,7 @@
+# 内容源 submodule：不纳入本工作区的 AI 索引，避免污染（不影响构建）。
+content/writing/
+
+# 构建产物与依赖
+dist/
+.astro/
+node_modules/

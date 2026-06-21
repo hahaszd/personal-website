@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { projects } from '../../data/projects';
+---
+
+<BaseLayout
+  title="项目"
+  description="我正在做 / 做过的项目，按实践记录的方式呈现：做了什么、怎么做、踩了什么坑、结果。"
+>
+  <h1>项目</h1>
+  <p>
+    讲「是什么」的同时亮出「我真做了什么」。以下按实践记录方式呈现，链接到 GitHub。
+  </p>
+
+  {
+    projects.map((project) => (
+      <article class="project">
+        <h2>{project.name}</h2>
+        <p>{project.tagline}</p>
+        <dl>
+          <dt>做了什么</dt>
+          <dd>{project.what}</dd>
+          <dt>怎么做</dt>
+          <dd>{project.how}</dd>
+          <dt>结果</dt>
+          <dd>{project.result}</dd>
+          <dt>日期</dt>
+          <dd>{project.date}</dd>
+        </dl>
+        {project.links.length > 0 && (
+          <p>
+            {project.links.map((link, i) => (
+              <>
+                {i > 0 && '　'}
+                <a href={link.href} target="_blank" rel="noopener">
+                  {link.label} →
+                </a>
+              </>
+            ))}
+          </p>
+        )}
+      </article>
+    ))
+  }
+</BaseLayout>
