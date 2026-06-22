@@ -1,19 +1,33 @@
 ---
-import { SITE_AUTHOR, NAV_LINKS } from '../consts';
+import { SITE_AUTHOR, SITE_AUTHOR_ROMAN, NAV_LINKS_EN, NAV_LINKS_ZH, LANG_SWITCH } from '../consts';
+
+interface Props {
+  lang?: 'zh' | 'en';
+  /** 语言切换目标 URL（对应的另一语言页面） */
+  altUrl?: string;
+}
+
+const { lang = 'en', altUrl } = Astro.props;
+
+const nav = lang === 'zh' ? NAV_LINKS_ZH : NAV_LINKS_EN;
+const brandHref = lang === 'zh' ? '/zh' : '/';
+const brandName = lang === 'zh' ? SITE_AUTHOR : SITE_AUTHOR_ROMAN;
+const sw = LANG_SWITCH[lang];
 
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 function isCurrent(href: string) {
-  if (href === '/') return pathname === '/';
-  return pathname === href || pathname.startsWith(href + '/');
+  const h = href.replace(/\/$/, '') || '/';
+  if (h === '/' || h === '/zh') return pathname === h;
+  return pathname === h || pathname.startsWith(h + '/');
 }
 ---
 
 <header class="site-header">
   <div class="container">
-    <a class="site-brand" href="/">{SITE_AUTHOR}</a>
-    <nav class="site-nav" aria-label="主导航">
+    <a class="site-brand" href={brandHref}>{brandName}</a>
+    <nav class="site-nav" aria-label="primary">
       {
-        NAV_LINKS.map((link) => (
+        nav.map((link) => (
           <a
             href={link.href}
             aria-current={isCurrent(link.href) ? 'page' : undefined}
@@ -21,6 +35,13 @@ function isCurrent(href: string) {
             {link.label}
           </a>
         ))
+      }
+      {
+        altUrl && (
+          <a class="lang-switch" href={altUrl} title={sw.title} hreflang={lang === 'zh' ? 'en' : 'zh'}>
+            {sw.label}
+          </a>
+        )
       }
     </nav>
   </div>

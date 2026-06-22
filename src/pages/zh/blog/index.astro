@@ -1,8 +1,8 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getPosts, formatDate } from '../../lib/posts';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getPosts, formatDate } from '../../../lib/posts';
 
-const posts = await getPosts('en');
+const posts = await getPosts('zh');
 
 const alternates = [
   { lang: 'en', href: new URL('/blog/', Astro.site).toString() },
@@ -12,26 +12,28 @@ const alternates = [
 ---
 
 <BaseLayout
-  lang="en"
-  title="Blog"
-  description="Long-form writing, reflections, and notes on working with AI."
-  altUrl="/zh/blog"
+  lang="zh"
+  title="博客"
+  description="长文、感悟、实践记录与 AI 使用心得。"
+  altUrl="/blog"
   alternates={alternates}
 >
-  <h1>Blog</h1>
+  <h1>博客</h1>
   {
     posts.length === 0 ? (
-      <p class="empty-note">No posts yet.</p>
+      <p class="empty-note">
+        还没有文章。挂载内容源 submodule 后，写作仓库里的成稿会自动出现在这里。
+      </p>
     ) : (
       <ul class="post-list">
         {posts.map((post) => (
           <li class="post-item">
             <h2>
-              <a href={`/blog/${post.data.slug}`}>{post.data.title}</a>
+              <a href={`/zh/blog/${post.data.slug}`}>{post.data.title}</a>
             </h2>
             <span class="meta">
               <time datetime={post.data.date.toISOString()}>
-                {formatDate(post.data.date, 'en')}
+                {formatDate(post.data.date, 'zh')}
               </time>
             </span>
             {post.data.summary && <p class="summary">{post.data.summary}</p>}

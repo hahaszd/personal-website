@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_AUTHOR, SITE_AUTHOR_ROMAN } from '../../consts';
+
+const alternates = [
+  { lang: 'en', href: new URL('/about/', Astro.site).toString() },
+  { lang: 'zh-CN', href: new URL('/zh/about/', Astro.site).toString() },
+  { lang: 'x-default', href: new URL('/about/', Astro.site).toString() },
+];
+---
+
+<BaseLayout
+  lang="zh"
+  title="关于"
+  description="关于孙之东——AI 时代的向导 / 翻译者。"
+  altUrl="/about"
+  alternates={alternates}
+>
+  <article class="prose">
+    <h1>关于</h1>
+    <p>
+      我是 <strong>{SITE_AUTHOR}（{SITE_AUTHOR_ROMAN}）</strong>。
+    </p>
+    <p>
+      我在围绕「AI 时代的个人品牌」持续输出，自我定位是
+      <strong>AI 时代的向导 / 翻译者</strong>——把复杂的 AI
+      讲清楚，带更多人跨过「不知道 AI 能做什么」这道认知门槛。
+    </p>
+    <p>
+      这个网站是我自己掌控、开放、可被检索引用的主场，用来沉淀长文与项目实践记录。科普是放大器，不是护城河——讲「是什么」的同时，我会挂靠在真实实践上：我真做了什么、踩了什么坑、我的判断。
+    </p>
+    <p>
+      你也可以在
+      <a href="https://github.com/hahaszd" rel="me noopener" target="_blank">GitHub</a>
+      和 X（见页脚）找到我。
+    </p>
+  </article>
+</BaseLayout>

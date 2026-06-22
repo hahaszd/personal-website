@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_AUTHOR, SITE_AUTHOR_ROMAN } from '../consts';
+
+const alternates = [
+  { lang: 'en', href: new URL('/about/', Astro.site).toString() },
+  { lang: 'zh-CN', href: new URL('/zh/about/', Astro.site).toString() },
+  { lang: 'x-default', href: new URL('/about/', Astro.site).toString() },
+];
+---
+
+<BaseLayout
+  lang="en"
+  title="About"
+  description="About Sun Zhidong — a guide and translator for the AI era."
+  altUrl="/zh/about"
+  alternates={alternates}
+>
+  <article class="prose">
+    <h1>About</h1>
+    <p>
+      I'm <strong>{SITE_AUTHOR_ROMAN}（{SITE_AUTHOR}）</strong>.
+    </p>
+    <p>
+      I write about <strong>personal reputation in the AI era</strong>, and I
+      think of myself as a <strong>guide / translator for the AI age</strong> —
+      making complex AI simple, and helping more people cross the threshold of
+      "not knowing what AI can do for them."
+    </p>
+    <p>
+      This site is my own open, indexable home base, where I let long-form
+      writing and hands-on project records accumulate. Explainers are an
+      amplifier, not a moat — so alongside the "what is it," I anchor everything
+      to real practice: what I actually built, the potholes I hit, and my own
+      judgment.
+    </p>
+    <p>
+      You can also find me on
+      <a href="https://github.com/hahaszd" rel="me noopener" target="_blank">GitHub</a>
+      and X (see footer).
+    </p>
+  </article>
+</BaseLayout>

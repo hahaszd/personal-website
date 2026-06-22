@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts, formatDate } from '../../lib/posts';
+import {
+  SITE_AUTHOR,
+  SITE_AUTHOR_ROMAN,
+  SITE_TAGLINE,
+  SITE_DESCRIPTION,
+} from '../../consts';
+
+const posts = await getPosts('zh');
+const latest = posts.slice(0, 5);
+
+const alternates = [
+  { lang: 'en', href: new URL('/', Astro.site).toString() },
+  { lang: 'zh-CN', href: new URL('/zh/', Astro.site).toString() },
+  { lang: 'x-default', href: new URL('/', Astro.site).toString() },
+];
+---
+
+<BaseLayout
+  lang="zh"
+  title="首页"
+  description={SITE_DESCRIPTION}
+  altUrl="/"
+  alternates={alternates}
+>
+  <section class="hero">
+    <p class="tagline">{SITE_TAGLINE}</p>
+    <h1>{SITE_AUTHOR}（{SITE_AUTHOR_ROMAN}）</h1>
+    <p class="lede">{SITE_DESCRIPTION}</p>
+  </section>
+
+  <hr />
+
+  <section>
+    <h2>关于</h2>
+    <p>
+      我在围绕「AI 时代的个人品牌」持续输出，自我定位是 AI 时代的向导 /
+      翻译者——把复杂的 AI 讲清楚，带更多人跨过「不知道 AI 能做什么」这道认知门槛。
+    </p>
+    <p>
+      这个网站是我自己掌控、开放、可被检索引用的主场：用来沉淀长文与项目实践记录。
+      科普是放大器，不是护城河——讲「是什么」的同时，我会挂靠在真实实践上：我真做了什么、踩了什么坑、我的判断。
+    </p>
+    <p>
+      <a href="/zh/blog">读博客 →</a>　<a href="/zh/about">更多关于我 →</a>
+    </p>
+  </section>
+
+  {
+    latest.length > 0 && (
+      <section>
+        <h2>最新文章</h2>
+        <ul class="post-list">
+          {latest.map((post) => (
+            <li class="post-item">
+              <h2>
+                <a href={`/zh/blog/${post.data.slug}`}>{post.data.title}</a>
+              </h2>
+              <span class="meta">
+                <time datetime={post.data.date.toISOString()}>
+                  {formatDate(post.data.date, 'zh')}
+                </time>
+              </span>
+              {post.data.summary && <p class="summary">{post.data.summary}</p>}
+            </li>
+          ))}
+        </ul>
+        {posts.length > latest.length && (
+          <p>
+            <a href="/zh/blog">查看全部 {posts.length} 篇 →</a>
+          </p>
+        )}
+      </section>
+    )
+  }
+</BaseLayout>

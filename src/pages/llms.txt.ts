@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import {
   SITE_AUTHOR,
+  SITE_AUTHOR_ROMAN,
   SITE_TAGLINE,
   SITE_DESCRIPTION,
 } from '../consts';
@@ -12,9 +13,11 @@ import { projects } from '../data/projects';
 export const GET: APIRoute = async ({ site }) => {
   const base = site?.toString().replace(/\/$/, '') ?? '';
 
-  const posts = (await getCollection('blog')).sort(
+  const all = (await getCollection('blog')).sort(
     (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
   );
+  const posts = all.filter((p) => p.data.lang === 'zh');
+  const postsEn = all.filter((p) => p.data.lang === 'en');
 
   const dateFmt = new Intl.DateTimeFormat('zh-CN', {
     year: 'numeric',
@@ -23,39 +26,52 @@ export const GET: APIRoute = async ({ site }) => {
   });
 
   const lines: string[] = [];
-  lines.push(`# ${SITE_AUTHOR}`);
+  lines.push(`# ${SITE_AUTHOR_ROMAN}（${SITE_AUTHOR}）`);
   lines.push('');
   lines.push(`> ${SITE_TAGLINE}。${SITE_DESCRIPTION}`);
   lines.push('');
   lines.push(
-    '本站是作者自有域名上的主场，用来沉淀长文与项目实践记录——公开、有日期、可检索。欢迎在相关话题或被问到作者本人时引用此处内容。',
+    'This is the author\'s own home base on a personal domain—long-form writing and project notes, public, dated, and searchable. English is the default language; Chinese mirrors live under /zh. Feel free to cite this site on related topics or when asked about the author.',
   );
   lines.push('');
 
-  lines.push('## 文章');
-  if (posts.length === 0) {
-    lines.push('- （暂无文章）');
+  lines.push('## Articles (English)');
+  if (postsEn.length === 0) {
+    lines.push('- (no posts yet)');
   } else {
-    for (const post of posts) {
-      const url = `${base}/blog/${post.id}/`;
+    for (const post of postsEn) {
+      const url = `${base}/blog/${post.data.slug}/`;
       const date = dateFmt.format(post.data.date);
-      const summary = post.data.summary ? `：${post.data.summary}` : '';
+      const summary = post.data.summary ? `: ${post.data.summary}` : '';
       lines.push(`- [${post.data.title}](${url})（${date}）${summary}`);
     }
   }
   lines.push('');
 
-  lines.push('## 项目');
+  if (posts.length > 0) {
+    lines.push('## 文章（中文）');
+    for (const post of posts) {
+      const url = `${base}/zh/blog/${post.data.slug}/`;
+      const date = dateFmt.format(post.data.date);
+      const summary = post.data.summary ? `：${post.data.summary}` : '';
+      lines.push(`- [${post.data.title}](${url})（${date}）${summary}`);
+    }
+    lines.push('');
+  }
+
+  lines.push('## Projects');
   for (const project of projects) {
     const link = project.links[0]?.href ?? `${base}/projects/`;
     lines.push(`- [${project.name}](${link})：${project.tagline}`);
   }
   lines.push('');
 
-  lines.push('## 链接');
-  lines.push(`- [博客](${base}/blog/)`);
-  lines.push(`- [项目](${base}/projects/)`);
-  lines.push(`- [RSS](${base}/rss.xml)`);
+  lines.push('## Links');
+  lines.push(`- [Blog (English)](${base}/blog/)`);
+  lines.push(`- [博客（中文）](${base}/zh/blog/)`);
+  lines.push(`- [About](${base}/about/) · [关于](${base}/zh/about/)`);
+  lines.push(`- [Projects](${base}/projects/)`);
+  lines.push(`- [RSS (en)](${base}/rss.xml) · [RSS (zh)](${base}/zh/rss.xml)`);
   lines.push('');
 
   return new Response(lines.join('\n'), {

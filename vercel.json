@@ -1,4 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "export GIT_TERMINAL_PROMPT=0 && git config --global url.\"https://x-access-token:$GH_PAT@github.com/\".insteadOf \"https://github.com/\" && git submodule sync --recursive && git submodule update --init --recursive --force && npm install"
+  "installCommand": "export GIT_TERMINAL_PROMPT=0 && git config --global url.\"https://x-access-token:$GH_PAT@github.com/\".insteadOf \"https://github.com/\" && git submodule sync --recursive && git submodule update --init --recursive --force && npm install",
+  "redirects": [
+    { "source": "/blog/AI时代的reputation", "destination": "/zh/blog/reputation-your-only-asset", "permanent": true },
+    { "source": "/blog/AI时代的reputation/", "destination": "/zh/blog/reputation-your-only-asset", "permanent": true },
+    { "source": "/blog/AI%E6%97%B6%E4%BB%A3%E7%9A%84reputation", "destination": "/zh/blog/reputation-your-only-asset", "permanent": true },
+    { "source": "/blog/AI%E6%97%B6%E4%BB%A3%E7%9A%84reputation/", "destination": "/zh/blog/reputation-your-only-asset", "permanent": true },
+
+    { "source": "/blog/AI的skill是什么", "destination": "/zh/blog/what-is-an-ai-skill", "permanent": true },
+    { "source": "/blog/AI的skill是什么/", "destination": "/zh/blog/what-is-an-ai-skill", "permanent": true },
+    { "source": "/blog/AI%E7%9A%84skill%E6%98%AF%E4%BB%80%E4%B9%88", "destination": "/zh/blog/what-is-an-ai-skill", "permanent": true },
+    { "source": "/blog/AI%E7%9A%84skill%E6%98%AF%E4%BB%80%E4%B9%88/", "destination": "/zh/blog/what-is-an-ai-skill", "permanent": true },
+
+    { "source": "/blog/大学文凭贬值", "destination": "/zh/blog/degree-blank-page", "permanent": true },
+    { "source": "/blog/大学文凭贬值/", "destination": "/zh/blog/degree-blank-page", "permanent": true },
+    { "source": "/blog/%E5%A4%A7%E5%AD%A6%E6%96%87%E5%87%AD%E8%B4%AC%E5%80%BC", "destination": "/zh/blog/degree-blank-page", "permanent": true },
+    { "source": "/blog/%E5%A4%A7%E5%AD%A6%E6%96%87%E5%87%AD%E8%B4%AC%E5%80%BC/", "destination": "/zh/blog/degree-blank-page", "permanent": true }
+  ]
 }

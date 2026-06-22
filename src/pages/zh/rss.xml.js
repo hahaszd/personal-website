@@ -1,22 +1,22 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import { SITE_TITLE_EN, SITE_DESCRIPTION_EN } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 
 export async function GET(context) {
   const posts = (await getCollection('blog'))
-    .filter((p) => p.data.lang === 'en')
+    .filter((p) => p.data.lang === 'zh')
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   return rss({
-    title: SITE_TITLE_EN,
-    description: SITE_DESCRIPTION_EN,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     site: context.site,
     items: posts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.date,
       description: post.data.summary,
-      link: `/blog/${post.data.slug}/`,
+      link: `/zh/blog/${post.data.slug}/`,
     })),
-    customData: `<language>en</language>`,
+    customData: `<language>zh-cn</language>`,
   });
 }

@@ -1,10 +1,14 @@
 ---
 import {
   SITE_TITLE,
+  SITE_TITLE_EN,
   SITE_DESCRIPTION,
+  SITE_DESCRIPTION_EN,
   SITE_AUTHOR,
   SITE_AUTHOR_ROMAN,
   SITE_TAGLINE,
+  PERSON_DESCRIPTION,
+  PERSON_KNOWS_ABOUT,
   SAME_AS,
 } from '../consts';
 import '../styles/global.css';
@@ -19,19 +23,26 @@ interface Props {
   updatedDate?: Date;
   /** 页面语言，用于结构化数据 inLanguage */
   lang?: string;
+  /** hreflang 备选语言链接 */
+  alternates?: { lang: string; href: string }[];
 }
 
 const {
   title,
-  description = SITE_DESCRIPTION,
   type = 'website',
   image,
   publishedDate,
   updatedDate,
-  lang = 'zh',
+  lang = 'en',
+  alternates = [],
 } = Astro.props;
 
-const pageTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
+const isEn = lang === 'en';
+const siteTitle = isEn ? SITE_TITLE_EN : SITE_TITLE;
+const description =
+  Astro.props.description ?? (isEn ? SITE_DESCRIPTION_EN : SITE_DESCRIPTION);
+
+const pageTitle = title ? `${title} · ${siteTitle}` : siteTitle;
 
 // 规范链接：依赖 astro.config 的 `site`。
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -40,12 +51,15 @@ const siteOrigin = Astro.site ? new URL(Astro.site).origin : canonicalURL.origin
 const inLanguage = lang === 'en' ? 'en' : 'zh-CN';
 
 // 作者实体：用稳定的 #person 锚点，便于文章 author 引用同一实体。
+// name 用罗马名（便于英文/通用 AI 锚定），alternateName 放中文名。
 const personSchema = {
   '@type': 'Person',
   '@id': `${siteOrigin}/#person`,
-  name: SITE_AUTHOR,
-  alternateName: SITE_AUTHOR_ROMAN,
-  description: SITE_TAGLINE,
+  name: SITE_AUTHOR_ROMAN,
+  alternateName: SITE_AUTHOR,
+  jobTitle: SITE_TAGLINE,
+  description: PERSON_DESCRIPTION,
+  knowsAbout: PERSON_KNOWS_ABOUT,
   url: `${siteOrigin}/`,
   sameAs: SAME_AS,
 };
@@ -53,11 +67,13 @@ const personSchema = {
 const websiteSchema = {
   '@type': 'WebSite',
   '@id': `${siteOrigin}/#website`,
-  name: SITE_TITLE,
+  name: siteTitle,
   url: `${siteOrigin}/`,
   inLanguage,
   publisher: { '@id': `${siteOrigin}/#person` },
 };
+
+const rssHref = new URL(isEn ? 'rss.xml' : 'zh/rss.xml', Astro.site);
 
 const articleSchema =
   type === 'article'
@@ -97,12 +113,18 @@ const jsonLd = {
 <meta name="author" content={SITE_AUTHOR} />
 <link rel="canonical" href={canonicalURL} />
 
+{
+  alternates.map((alt) => (
+    <link rel="alternate" hreflang={alt.lang} href={alt.href} />
+  ))
+}
+
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
   rel="alternate"
   type="application/rss+xml"
-  title={SITE_TITLE}
-  href={new URL('rss.xml', Astro.site)}
+  title={siteTitle}
+  href={rssHref}
 />
 
 <!-- Open Graph -->
@@ -110,8 +132,8 @@ const jsonLd = {
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalURL} />
-<meta property="og:site_name" content={SITE_TITLE} />
-<meta property="og:locale" content="zh_CN" />
+<meta property="og:site_name" content={siteTitle} />
+<meta property="og:locale" content={isEn ? 'en_US' : 'zh_CN'} />
 {ogImage && <meta property="og:image" content={ogImage} />}
 {
   type === 'article' && publishedDate && (

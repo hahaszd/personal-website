@@ -1,11 +1,18 @@
 ---
-import { SITE_AUTHOR, SOCIAL_LINKS } from '../consts';
+import { SITE_AUTHOR, SITE_AUTHOR_ROMAN, SOCIAL_LINKS } from '../consts';
+
+interface Props {
+  lang?: 'zh' | 'en';
+}
+const { lang = 'en' } = Astro.props;
 const year = new Date().getFullYear();
+const name = lang === 'zh' ? SITE_AUTHOR : SITE_AUTHOR_ROMAN;
+const rssHref = lang === 'zh' ? '/zh/rss.xml' : '/rss.xml';
 ---
 
 <footer class="site-footer">
   <div class="container">
-    <span>© {year} {SITE_AUTHOR}</span>
+    <span>© {year} {name}</span>
     <span>
       {
         SOCIAL_LINKS.map((link, i) => (
@@ -18,7 +25,7 @@ const year = new Date().getFullYear();
         ))
       }
       {' · '}
-      <a href="/rss.xml">RSS</a>
+      <a href={rssHref}>RSS</a>
     </span>
   </div>
 </footer>

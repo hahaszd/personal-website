@@ -11,10 +11,10 @@ export default defineConfig({
   site: SITE_URL,
   // 默认静态输出（SSG）：保证正文为可直出 HTML，便于被通用 AI 抓取与引用。
   trailingSlash: 'ignore',
-  // 双语预留：本期只产出中文内容，但路由架构已为英文 (/en/...) 留好位置。
+  // 语言口径：英文为默认（根域），中文镜像放 /zh。
   i18n: {
-    defaultLocale: 'zh',
-    locales: ['zh', 'en'],
+    defaultLocale: 'en',
+    locales: ['en', 'zh'],
     routing: {
       prefixDefaultLocale: false,
     },

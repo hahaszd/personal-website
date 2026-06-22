@@ -2,7 +2,11 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { DEFAULT_LOCALE } from '../consts';
+
+interface Alternate {
+  lang: string;
+  href: string;
+}
 
 interface Props {
   title?: string;
@@ -11,25 +15,35 @@ interface Props {
   image?: string;
   publishedDate?: Date;
   updatedDate?: Date;
-  lang?: string;
+  lang?: 'zh' | 'en';
+  /** 语言切换目标 URL */
+  altUrl?: string;
+  /** hreflang 备选语言链接 */
+  alternates?: Alternate[];
 }
 
-const { lang = DEFAULT_LOCALE, ...head } = Astro.props;
+const {
+  lang = 'en',
+  altUrl,
+  alternates,
+  ...head
+} = Astro.props;
+const skipLabel = lang === 'zh' ? '跳到正文' : 'Skip to content';
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang === 'en' ? 'en' : 'zh-CN'}>
   <head>
-    <BaseHead lang={lang} {...head} />
+    <BaseHead lang={lang} alternates={alternates} {...head} />
   </head>
   <body>
-    <a class="skip-link" href="#main">跳到正文</a>
-    <Header />
+    <a class="skip-link" href="#main">{skipLabel}</a>
+    <Header lang={lang} altUrl={altUrl} />
     <main id="main">
       <div class="container">
         <slot />
       </div>
     </main>
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>

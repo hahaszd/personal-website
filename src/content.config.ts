@@ -10,6 +10,17 @@ const ARTICLES_DIR = path.resolve(process.cwd(), 'content/writing/文章');
 
 const FOLDER_RE = /^(\d{4}-\d{2}-\d{2})-(.+)$/;
 
+// 英文成稿命名约定：文件名以 -EN 结尾（如 Reputation-EN.md）。
+const EN_FILE_RE = /-EN\.md$/i;
+
+// 文件夹 → 英文 slug 映射（中英两版共用同一 slug：/blog/<slug> 与 /en/blog/<slug>）。
+// 新文章若未在此登记，则回退到文件夹「主题」段（仅中文也能正常工作）。
+const SLUG_MAP: Record<string, string> = {
+  '2026-06-15-AI时代的reputation': 'reputation-your-only-asset',
+  '2026-06-16-AI的skill是什么': 'what-is-an-ai-skill',
+  '2026-06-18-大学文凭贬值': 'degree-blank-page',
+};
+
 /** 从正文推断标题：第一处 `# H1`。 */
 function inferTitle(body: string): string | undefined {
   const m = body.match(/^\s*#\s+(.+?)\s*$/m);
@@ -40,16 +51,16 @@ function inferSummary(body: string): string | undefined {
 }
 
 /**
- * 在一个 `02-成稿/` 目录里择版本：
+ * 在中文成稿里择版本：
  * 1) 优先文件名含「发布版」；2) 否则取唯一 md；3) 都不满足 → 跳过并告警。
  */
-function pickVersion(
-  mdFiles: string[],
+function pickChinese(
+  files: string[],
   folderName: string,
   logger: LoaderContext['logger'],
 ): string | undefined {
-  if (mdFiles.length === 0) return undefined;
-  const published = mdFiles.filter((f) => f.includes('发布版'));
+  if (files.length === 0) return undefined;
+  const published = files.filter((f) => f.includes('发布版'));
   if (published.length >= 1) {
     if (published.length > 1) {
       logger.warn(
@@ -58,9 +69,9 @@ function pickVersion(
     }
     return published[0];
   }
-  if (mdFiles.length === 1) return mdFiles[0];
+  if (files.length === 1) return files[0];
   logger.warn(
-    `「${folderName}」的 02-成稿 有多个版本但无「发布版」标记，已跳过：${mdFiles.join(', ')}`,
+    `「${folderName}」的中文成稿有多个版本但无「发布版」标记，已跳过：${files.join(', ')}`,
   );
   return undefined;
 }
@@ -80,49 +91,39 @@ function writingLoader(): Loader {
         return;
       }
 
-      const entries = await readdir(ARTICLES_DIR, { withFileTypes: true });
-      for (const dirent of entries) {
-        if (!dirent.isDirectory()) continue;
-        const folderName = dirent.name;
-        const folderMatch = folderName.match(FOLDER_RE);
-        if (!folderMatch) continue; // 不符合 YYYY-MM-DD-主题 的目录忽略
-
-        const inferredDate = folderMatch[1];
-        const inferredSlug = folderMatch[2];
-
-        const finalDir = path.join(ARTICLES_DIR, folderName, '02-成稿');
-        if (!existsSync(finalDir)) continue;
-
-        const allFiles = (await readdir(finalDir)).filter((f) =>
-          f.toLowerCase().endsWith('.md'),
-        );
-        const chosen = pickVersion(allFiles, folderName, logger);
-        if (!chosen) continue;
-
-        const filePath = path.join(finalDir, chosen);
+      // 从单个 md 文件构建并写入一条 entry（中文或英文）。
+      const buildEntry = async (
+        filePath: string,
+        lang: 'zh' | 'en',
+        slug: string,
+        inferredDate: string,
+        folderName: string,
+      ) => {
         const relativeFilePath = path.relative(process.cwd(), filePath);
         const raw = await readFile(filePath, 'utf-8');
         const { data: fm, content: body } = matter(raw);
 
-        // 可选 frontmatter 覆盖；没有就回退到推断值。不强制改写作流程。
         if (fm.published === false) {
-          logger.info(`「${folderName}」frontmatter 标记 published: false，已跳过。`);
-          continue;
+          logger.info(
+            `「${folderName}」(${lang}) frontmatter 标记 published: false，已跳过。`,
+          );
+          return;
         }
 
         const title = (fm.title as string) ?? inferTitle(body);
         if (!title) {
-          logger.warn(`「${folderName}」无法推断标题（缺少 # H1），已跳过。`);
-          continue;
+          logger.warn(
+            `「${folderName}」(${lang}) 无法推断标题（缺少 # H1），已跳过。`,
+          );
+          return;
         }
-        const slug = (fm.slug as string) ?? inferredSlug;
+        const finalSlug = (fm.slug as string) ?? slug;
         const date = (fm.date as string) ?? inferredDate;
         const summary = (fm.summary as string) ?? inferSummary(body);
         const cover = (fm.cover as string) ?? undefined;
-        const lang = (fm.lang as string) ?? 'zh';
 
         const fileStat = await stat(filePath);
-        const id = slug;
+        const id = lang === 'zh' ? finalSlug : `${finalSlug}-en`;
 
         const data = await parseData({
           id,
@@ -132,6 +133,7 @@ function writingLoader(): Loader {
             summary,
             cover,
             lang,
+            slug: finalSlug,
             updated: fileStat.mtime.toISOString(),
             sourcePath: relativeFilePath,
           },
@@ -148,10 +150,59 @@ function writingLoader(): Loader {
           digest,
           rendered,
         });
+      };
+
+      const entries = await readdir(ARTICLES_DIR, { withFileTypes: true });
+      for (const dirent of entries) {
+        if (!dirent.isDirectory()) continue;
+        const folderName = dirent.name;
+        const folderMatch = folderName.match(FOLDER_RE);
+        if (!folderMatch) continue; // 不符合 YYYY-MM-DD-主题 的目录忽略
+
+        const inferredDate = folderMatch[1];
+        const inferredSlug = folderMatch[2];
+        const slug = SLUG_MAP[folderName] ?? inferredSlug;
+
+        const finalDir = path.join(ARTICLES_DIR, folderName, '02-成稿');
+        if (!existsSync(finalDir)) continue;
+
+        const allFiles = (await readdir(finalDir)).filter((f) =>
+          f.toLowerCase().endsWith('.md'),
+        );
+        const englishFiles = allFiles.filter((f) => EN_FILE_RE.test(f));
+        const chineseFiles = allFiles.filter((f) => !EN_FILE_RE.test(f));
+
+        // 中文版
+        const zhFile = pickChinese(chineseFiles, folderName, logger);
+        if (zhFile) {
+          await buildEntry(
+            path.join(finalDir, zhFile),
+            'zh',
+            slug,
+            inferredDate,
+            folderName,
+          );
+        }
+
+        // 英文版（存在 -EN 文件时）
+        if (englishFiles.length >= 1) {
+          if (englishFiles.length > 1) {
+            logger.warn(
+              `「${folderName}」有多个 -EN 英文文件，取第一个：${englishFiles[0]}`,
+            );
+          }
+          await buildEntry(
+            path.join(finalDir, englishFiles[0]),
+            'en',
+            slug,
+            inferredDate,
+            folderName,
+          );
+        }
       }
 
       const count = store.keys().length;
-      logger.info(`内容加载完成：共 ${count} 篇文章。`);
+      logger.info(`内容加载完成：共 ${count} 条（含中英）。`);
     },
   };
 }
@@ -163,7 +214,8 @@ const blog = defineCollection({
     date: z.coerce.date(),
     summary: z.string().optional(),
     cover: z.string().optional(),
-    lang: z.string().default('zh'),
+    lang: z.enum(['zh', 'en']).default('zh'),
+    slug: z.string(),
     updated: z.coerce.date().optional(),
     sourcePath: z.string().optional(),
   }),
