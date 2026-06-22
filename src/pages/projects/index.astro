@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { projects } from '../../data/projects';
+import { projects, STATUS_LABEL } from '../../data/projects';
 ---
 
 <BaseLayout
@@ -15,7 +15,12 @@ import { projects } from '../../data/projects';
   {
     projects.map((project) => (
       <article class="project">
-        <h2>{project.name}</h2>
+        <h2>
+          {project.name}
+          <span class={`status status-${project.status}`}>
+            {STATUS_LABEL[project.status]}
+          </span>
+        </h2>
         <p>{project.tagline}</p>
         <dl>
           <dt>做了什么</dt>

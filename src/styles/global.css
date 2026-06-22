@@ -265,6 +265,29 @@ main {
   margin: 0 0 0.5rem;
   font-size: 1.3rem;
 }
+.project h2 .status {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  margin-left: 0.6rem;
+  padding: 0.15em 0.55em;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.project h2 .status-completed {
+  color: #2f6f3e;
+  border-color: #bcd9c2;
+  background: #f0f7f1;
+}
+.project h2 .status-paused {
+  color: #8a6d3b;
+  border-color: #e3d4b0;
+  background: #f8f3e6;
+}
 .project dl {
   margin: 0.75rem 0 0;
 }
