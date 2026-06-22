@@ -60,8 +60,7 @@ export const LANG_SWITCH = {
 
 export const SOCIAL_LINKS = [
   { href: 'https://github.com/hahaszd', label: 'GitHub' },
-  // TODO: 填上你的 X 链接后取消注释（会同时进页脚与 JSON-LD 的 sameAs）。
-  // { href: 'https://x.com/你的用户名', label: 'X' },
+  { href: 'https://x.com/Zhidong2025', label: 'X' },
 ];
 
 // 结构化数据 (JSON-LD) 里 Person.sameAs 用的权威外链，与社交链接保持一致。
