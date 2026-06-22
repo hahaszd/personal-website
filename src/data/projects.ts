@@ -53,7 +53,7 @@ export const projects: Project[] = [
     what: '一个多租户的 AI 电话接待系统：Twilio 接入来电与短信，OpenAI Realtime 实时语音对话收集工单信息，配老板端线索仪表盘、管理后台、Stripe 订阅与 14 天试用、落地页与演示流程，还写了一批免费获客的抓取脚本。',
     how: 'TypeScript / Node + Express，SQLite（PostgreSQL 备份），Docker 化部署在 Railway。难点在实时语音的延迟与打断处理，以及澳洲号码的合规（地址 / 监管 bundle）。',
     result: '功能基本跑通，但综合权衡市场与投入产出后暂停，目前没有继续推进的计划。公开出来，作为一次完整的「从 0 搭 AI 语音 SaaS」的实践记录。',
-    date: '2026',
+    date: '2026-04',
     links: [{ label: 'GitHub', href: 'https://github.com/hahaszd/pickupai' }],
   },
 ];
