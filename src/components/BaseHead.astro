@@ -1,5 +1,12 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, SITE_AUTHOR } from '../consts';
+import {
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  SITE_AUTHOR,
+  SITE_AUTHOR_ROMAN,
+  SITE_TAGLINE,
+  SAME_AS,
+} from '../consts';
 import '../styles/global.css';
 
 interface Props {
@@ -10,6 +17,8 @@ interface Props {
   image?: string;
   publishedDate?: Date;
   updatedDate?: Date;
+  /** 页面语言，用于结构化数据 inLanguage */
+  lang?: string;
 }
 
 const {
@@ -19,6 +28,7 @@ const {
   image,
   publishedDate,
   updatedDate,
+  lang = 'zh',
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
@@ -26,6 +36,54 @@ const pageTitle = title ? `${title} · ${SITE_TITLE}` : SITE_TITLE;
 // 规范链接：依赖 astro.config 的 `site`。
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = image ? new URL(image, Astro.site) : undefined;
+const siteOrigin = Astro.site ? new URL(Astro.site).origin : canonicalURL.origin;
+const inLanguage = lang === 'en' ? 'en' : 'zh-CN';
+
+// 作者实体：用稳定的 #person 锚点，便于文章 author 引用同一实体。
+const personSchema = {
+  '@type': 'Person',
+  '@id': `${siteOrigin}/#person`,
+  name: SITE_AUTHOR,
+  alternateName: SITE_AUTHOR_ROMAN,
+  description: SITE_TAGLINE,
+  url: `${siteOrigin}/`,
+  sameAs: SAME_AS,
+};
+
+const websiteSchema = {
+  '@type': 'WebSite',
+  '@id': `${siteOrigin}/#website`,
+  name: SITE_TITLE,
+  url: `${siteOrigin}/`,
+  inLanguage,
+  publisher: { '@id': `${siteOrigin}/#person` },
+};
+
+const articleSchema =
+  type === 'article'
+    ? {
+        '@type': 'BlogPosting',
+        headline: title,
+        description,
+        inLanguage,
+        ...(publishedDate && { datePublished: publishedDate.toISOString() }),
+        ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+        ...(ogImage && { image: ogImage.toString() }),
+        author: { '@id': `${siteOrigin}/#person` },
+        publisher: { '@id': `${siteOrigin}/#person` },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL.toString() },
+        url: canonicalURL.toString(),
+      }
+    : undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    personSchema,
+    websiteSchema,
+    ...(articleSchema ? [articleSchema] : []),
+  ],
+};
 ---
 
 <meta charset="utf-8" />
@@ -77,3 +135,7 @@ const ogImage = image ? new URL(image, Astro.site) : undefined;
 <meta name="twitter:title" content={pageTitle} />
 <meta name="twitter:description" content={description} />
 {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+<!-- 结构化数据 (Schema.org JSON-LD)：给搜索引擎/AI 一个清晰的作者与内容实体 -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+

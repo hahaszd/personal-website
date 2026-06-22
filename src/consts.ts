@@ -1,7 +1,9 @@
 // 站点级共享配置。集中放置文案与元数据，便于统一修改与被 AI 引用。
 
-// TODO: 改成你的真实姓名 / 笔名（会显示在页头、关于、版权、OG 作者字段）。
 export const SITE_AUTHOR = '孙之东';
+
+// 罗马拼写（英文场景 / 结构化数据的 alternateName，便于英文检索）。
+export const SITE_AUTHOR_ROMAN = 'Zhidong Sun';
 
 export const SITE_TITLE = `${SITE_AUTHOR} · 个人网站`;
 
@@ -24,4 +26,9 @@ export const NAV_LINKS = [
 
 export const SOCIAL_LINKS = [
   { href: 'https://github.com/hahaszd', label: 'GitHub' },
+  // TODO: 填上你的 X 链接后取消注释（会同时进页脚与 JSON-LD 的 sameAs）。
+  // { href: 'https://x.com/你的用户名', label: 'X' },
 ];
+
+// 结构化数据 (JSON-LD) 里 Person.sameAs 用的权威外链，与社交链接保持一致。
+export const SAME_AS = SOCIAL_LINKS.map((l) => l.href);

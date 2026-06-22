@@ -20,7 +20,7 @@ const { lang = DEFAULT_LOCALE, ...head } = Astro.props;
 <!doctype html>
 <html lang={lang}>
   <head>
-    <BaseHead {...head} />
+    <BaseHead lang={lang} {...head} />
   </head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
