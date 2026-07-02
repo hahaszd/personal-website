@@ -65,7 +65,7 @@ git submodule add https://github.com/hahaszd/insights-and-plan.git content/writi
 git submodule update --init --recursive
 ```
 
-> 注意：`content/writing/` 已写入 `.cursorignore`，仅用于避免 AI 索引污染，不影响构建。
+> 注意：`content/writing/` 已在 `.claude/settings.json` 里对 Claude 的 Read/Edit `deny`，仅用于避免 AI 索引污染，不影响构建。
 
 ## 部署到 Vercel
 
