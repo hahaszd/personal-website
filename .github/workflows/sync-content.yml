@@ -1,0 +1,37 @@
+name: Sync writing content
+
+on:
+  repository_dispatch:
+    types: [writing-updated]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure access to private content repo
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.CONTENT_REPO_PAT }}@github.com/".insteadOf "https://github.com/"
+
+      - name: Update writing submodule to latest
+        run: git submodule update --init --remote --merge content/writing
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet -- content/writing; then
+            echo "No content changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/writing
+          git commit -m "content: auto-sync writing submodule"
+          git push
