@@ -62,7 +62,7 @@ export const GET: APIRoute = async ({ site }) => {
   lines.push('## Projects');
   for (const project of projects) {
     const link = project.links[0]?.href ?? `${base}/projects/`;
-    lines.push(`- [${project.name}](${link})：${project.tagline}`);
+    lines.push(`- [${project.name}](${link}) — ${project.en.tagline}`);
   }
   lines.push('');
 

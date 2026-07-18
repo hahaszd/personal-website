@@ -288,6 +288,11 @@ main {
   border-color: #e3d4b0;
   background: #f8f3e6;
 }
+.project h2 .status-ongoing {
+  color: #2f5c8a;
+  border-color: #bcd0e3;
+  background: #eef4fa;
+}
 .project dl {
   margin: 0.75rem 0 0;
 }
@@ -301,6 +306,22 @@ main {
 }
 .project dd {
   margin: 0.2rem 0 0;
+}
+
+/* 页面底部：验证中的产品探索 */
+.explorations {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.explorations h2 {
+  font-size: 1.05rem;
+  color: var(--ink-faint);
+  margin: 0 0 0.5rem;
+}
+.explorations p {
+  color: var(--ink-faint);
+  font-size: 0.95rem;
 }
 
 /* 首页 hero */

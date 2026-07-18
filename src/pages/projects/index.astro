@@ -1,15 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { projects, STATUS_LABEL } from '../../data/projects';
+import {
+  projects,
+  STATUS_LABEL_EN,
+  EXPLORATIONS,
+} from '../../data/projects';
 ---
 
 <BaseLayout
-  title="项目"
-  description="我正在做 / 做过的项目，按实践记录的方式呈现：做了什么、怎么做、踩了什么坑、结果。"
+  title="Projects"
+  description="What I'm building and what I've built, told as practice notes: what I made, how I made it, what I ran into, and the outcome."
 >
-  <h1>项目</h1>
+  <h1>Projects</h1>
   <p>
-    讲「是什么」的同时亮出「我真做了什么」。以下按实践记录方式呈现，链接到 GitHub。
+    Alongside writing about what AI <em>is</em>, this is what I've actually
+    built. Each project is told as a practice note — dated, honest about status,
+    and linked to the source where it's public.
   </p>
 
   {
@@ -18,18 +24,18 @@ import { projects, STATUS_LABEL } from '../../data/projects';
         <h2>
           {project.name}
           <span class={`status status-${project.status}`}>
-            {STATUS_LABEL[project.status]}
+            {STATUS_LABEL_EN[project.status]}
           </span>
         </h2>
-        <p>{project.tagline}</p>
+        <p>{project.en.tagline}</p>
         <dl>
-          <dt>做了什么</dt>
-          <dd>{project.what}</dd>
-          <dt>怎么做</dt>
-          <dd>{project.how}</dd>
-          <dt>结果</dt>
-          <dd>{project.result}</dd>
-          <dt>日期</dt>
+          <dt>What</dt>
+          <dd>{project.en.what}</dd>
+          <dt>How</dt>
+          <dd>{project.en.how}</dd>
+          <dt>Outcome</dt>
+          <dd>{project.en.result}</dd>
+          <dt>Date</dt>
           <dd>{project.date}</dd>
         </dl>
         {project.links.length > 0 && (
@@ -47,4 +53,9 @@ import { projects, STATUS_LABEL } from '../../data/projects';
       </article>
     ))
   }
+
+  <section class="explorations">
+    <h2>{EXPLORATIONS.en.heading}</h2>
+    <p>{EXPLORATIONS.en.body}</p>
+  </section>
 </BaseLayout>

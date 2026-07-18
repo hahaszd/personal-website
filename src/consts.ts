@@ -37,7 +37,7 @@ export const DEFAULT_LOCALE = 'en' as const;
 export const LOCALES = ['en', 'zh'] as const;
 export type Locale = (typeof LOCALES)[number];
 
-// 导航（按语言）。英文在根域，中文在 /zh。projects 暂为同一页。
+// 导航（按语言）。英文在根域，中文在 /zh。
 export const NAV_LINKS_EN = [
   { href: '/', label: 'Home' },
   { href: '/blog', label: 'Blog' },
@@ -48,7 +48,7 @@ export const NAV_LINKS_EN = [
 export const NAV_LINKS_ZH = [
   { href: '/zh', label: '首页' },
   { href: '/zh/blog', label: '博客' },
-  { href: '/projects', label: '项目' },
+  { href: '/zh/projects', label: '项目' },
   { href: '/zh/about', label: '关于' },
 ];
 
