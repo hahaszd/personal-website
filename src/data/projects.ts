@@ -51,7 +51,9 @@ export const projects: Project[] = [
     name: 'CouncilBeacon',
     status: 'ongoing',
     date: '2026-06',
-    links: [],
+    links: [
+      { label: 'councilbeacon.com.au', href: 'https://councilbeacon.com.au' },
+    ],
     en: {
       tagline:
         'A public information portal that helps everyday NSW residents actually use, understand, and keep up with their local city council.',
