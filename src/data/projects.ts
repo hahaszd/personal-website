@@ -102,6 +102,32 @@ export const projects: Project[] = [
     },
   },
   {
+    name: 'Benefits Radar',
+    status: 'ongoing',
+    date: '2026-07',
+    links: [],
+    en: {
+      tagline:
+        'A deadline-radar for government benefits: personalised checklists and reminders so Australians stop missing the A$10bn+ in support they never claim each year.',
+      what:
+        'Tackles a real gap — Australians miss billions in government benefits every year, and around 90 "you only get it if you apply" programs have no personalised official reminder. The product is a 2-minute screener → personalised benefit checklist → tick-to-track → "you still have $X unclaimed" → email and calendar reminders. A first-class, hard-to-copy feature is filtering out dead / expired programs (every item carries a last-verified date), since negative knowledge is exactly where generic AI and content farms get it wrong.',
+      how:
+        'Validation-first, zero-cost cold start: prove demand through free "benefit calendar" material packs and a sign-up funnel before any paid spend. The real moat is a change-detection pipeline that continuously tracks federal / state rule changes and deadlines — every rule carries an official source URL. So far I have built source-backed rule libraries for NSW (~90 active + 14 closed) and VIC (~65 active), a Phase-0 validation plan with fixed go / kill thresholds, and the scaffolding for a web MVP (landing + screener + checklist + email + calendar feed, PWA).',
+      result:
+        'Officially in Phase 0 (zero-cost validation) as of July 2026 — rule libraries and validation plan done, web MVP in progress; no launch or users yet. Deliberately kept lean until demand is proven.',
+    },
+    zh: {
+      tagline:
+        '政府福利的「死线雷达」：个人化清单 + 提醒，帮澳洲人别再错过每年 100 亿澳元+ 没人领的福利。',
+      what:
+        '针对一个真实缺口——澳洲人每年错过巨额政府福利，约 90 个「不主动申请就拿不到」的项目没有任何个人化官方提醒。产品是「2 分钟筛查 → 个人化福利清单 → 打勾追踪 →『你还有 $X 没领』→ 邮件 + 日历提醒」。一个一等价值、也最难抄的差异点是「排除已关闭 / 过期项目」（每条挂最后核实日期）——负面知识正是通用 AI 和内容农场最常出错的地方。',
+      how:
+        '验证优先、零成本冷启动：先用免费的「福利日历」素材包 + 报名漏斗验证需求，达标才付费投放。真正的壁垒是一条持续侦测联邦 / 州规则变动与死线的「变更侦测管道」——每条规则都挂官方源 URL。目前已建成有来源背书的 NSW（约 90 活跃 + 14 已关闭）与 VIC（约 65 活跃）规则库、带固定通过 / 关停门槛的阶段 0 验证计划，以及网页 MVP 的骨架（landing + 筛查器 + 清单 + 邮件 + 日历订阅，PWA）。',
+      result:
+        '2026 年 7 月正式进入阶段 0（零成本验证）——规则库与验证计划已完成，网页 MVP 开发中；尚未上线、暂无用户。刻意保持精简，等需求被证实再加码。',
+    },
+  },
+  {
     name: 'VoiceSpark',
     status: 'completed',
     date: '2026-01',
@@ -167,10 +193,10 @@ export const projects: Project[] = [
 export const EXPLORATIONS = {
   en: {
     heading: 'Explorations in validation',
-    body: "A few product ideas I'm currently validating before writing much code — deliberately kept at the research stage until demand is proven: Benefits Radar (personalised deadline reminders for the A$10bn+ in government benefits Australians miss each year), a FIRB vacancy-fee compliance helper for foreign property owners, and a concert telephoto-phone rental side-project. Each has market research, a compliance analysis, and a lean validation plan; none has shipped yet.",
+    body: "A couple more product ideas I'm still validating before writing much code — deliberately kept at the research stage until demand is proven: a FIRB vacancy-fee compliance helper for foreign property owners, and a concert telephoto-phone rental side-project. Each has market research, a compliance analysis, and a lean validation plan; neither has shipped yet.",
   },
   zh: {
     heading: '验证中的产品探索',
-    body: '几个正在验证、还没大量写代码的产品想法——刻意停在调研阶段，等需求被证实再往前推：Benefits Radar（为澳洲人每年错过的 100 亿澳元+ 政府福利做个人化死线提醒）、面向外国房产业主的 FIRB 空置费合规助手、以及演唱会长焦手机租赁副业。每个都有市场调研、合规分析与精益验证方案，但都尚未上线。',
+    body: '还有几个正在验证、没大量写代码的产品想法——刻意停在调研阶段，等需求被证实再往前推：面向外国房产业主的 FIRB 空置费合规助手、以及演唱会长焦手机租赁副业。都有市场调研、合规分析与精益验证方案，但尚未上线。',
   },
 };
