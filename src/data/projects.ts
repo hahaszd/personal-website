@@ -106,6 +106,7 @@ export const projects: Project[] = [
     status: 'completed',
     date: '2026-01',
     links: [
+      { label: 'voicespark.app', href: 'https://voicespark.app' },
       {
         label: 'GitHub',
         href: 'https://github.com/hahaszd/voice-record_webapp',
@@ -118,7 +119,8 @@ export const projects: Project[] = [
         'A lightweight web tool focused on personal idea capture and study notes — not long meeting recordings, but 30-second to 5-minute "fragments." It records your microphone and system audio at the same time so you can take notes while you watch; transcripts are auto-copied, editable, searchable by history, and it supports continuous auto-capture.',
       how:
         'A pure front-end app (vanilla HTML/CSS/JS with Web Audio / MediaRecorder, IndexedDB for local storage, installable as a PWA) paired with a FastAPI backend, with transcription via Google Speech-to-Text. Privacy-first: audio is only uploaded during transcription and never stored. The hardest parts were all in browser audio — especially iOS/Safari\'s limited support for system audio — and mobile recording stability took many iterations.',
-      result: 'Shipped and actively maintained (v1.0).',
+      result:
+        'Live at voicespark.app and actively maintained, with 100+ iterative feature releases.',
     },
     zh: {
       tagline:
@@ -127,14 +129,17 @@ export const projects: Project[] = [
         '一个轻量的网页工具，专注个人灵感捕捉与学习笔记——不是冗长的会议录音，而是 30 秒到 5 分钟的「碎片」。可同时录麦克风和系统声音、边看边记；转写后自动复制、可编辑、按历史搜索，也支持连续自动捕捉。',
       how:
         '纯前端（原生 HTML/CSS/JS + Web Audio / MediaRecorder，IndexedDB 本地存储，可装成 PWA）配 FastAPI 后端，转写走 Google Speech-to-Text，坚持隐私优先：音频只在转写时上传、不留存。最大的坑都在浏览器音频上——尤其 iOS/Safari 对系统声音支持有限，移动端录音稳定性来回打磨了很多版。',
-      result: '已上线并持续维护（v1.0）。',
+      result: '已上线 voicespark.app 并持续维护，迭代了 100+ 个功能版本。',
     },
   },
   {
     name: 'PickupAI',
     status: 'paused',
     date: '2026-04',
-    links: [{ label: 'GitHub', href: 'https://github.com/hahaszd/pickupai' }],
+    links: [
+      { label: 'getpickupai.com.au', href: 'https://www.getpickupai.com.au' },
+      { label: 'GitHub', href: 'https://github.com/hahaszd/pickupai' },
+    ],
     en: {
       tagline:
         'A 24/7 AI phone receptionist for Australian tradies: answers calls automatically, collects job details through natural conversation, and texts the lead to the boss.',
@@ -143,7 +148,7 @@ export const projects: Project[] = [
       how:
         'TypeScript / Node + Express, SQLite (with a PostgreSQL fallback), dockerized and deployed on Railway. The hard parts were latency and barge-in handling for real-time voice, and Australian phone-number compliance (address / regulatory bundles).',
       result:
-        'Core functionality works end to end, but after weighing the market against the effort I paused it — no current plans to push further. Published as a complete "building an AI voice SaaS from scratch" case study.',
+        'Core functionality works end to end and the live site stays up as a demo, but after weighing the market against the effort I paused it — no current plans to push further. Published as a complete "building an AI voice SaaS from scratch" case study.',
     },
     zh: {
       tagline:
@@ -153,7 +158,7 @@ export const projects: Project[] = [
       how:
         'TypeScript / Node + Express，SQLite（PostgreSQL 备份），Docker 化部署在 Railway。难点在实时语音的延迟与打断处理，以及澳洲号码的合规（地址 / 监管 bundle）。',
       result:
-        '功能基本跑通，但综合权衡市场与投入产出后暂停，目前没有继续推进的计划。公开出来，作为一次完整的「从 0 搭 AI 语音 SaaS」的实践记录。',
+        '功能基本跑通、线上站点保留着可体验的 demo，但综合权衡市场与投入产出后暂停，目前没有继续推进的计划。公开出来，作为一次完整的「从 0 搭 AI 语音 SaaS」的实践记录。',
     },
   },
 ];
