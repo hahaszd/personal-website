@@ -105,7 +105,9 @@ export const projects: Project[] = [
     name: 'Benefits Radar',
     status: 'ongoing',
     date: '2026-07',
-    links: [],
+    links: [
+      { label: 'benefitsradar.com.au', href: 'https://benefitsradar.com.au' },
+    ],
     en: {
       tagline:
         'A deadline-radar for government benefits: personalised checklists and reminders so Australians stop missing the A$10bn+ in support they never claim each year.',
@@ -114,7 +116,7 @@ export const projects: Project[] = [
       how:
         'Validation-first, zero-cost cold start: prove demand through free "benefit calendar" material packs and a sign-up funnel before any paid spend. The real moat is a change-detection pipeline that continuously tracks federal / state rule changes and deadlines — every rule carries an official source URL. So far I have built source-backed rule libraries for NSW (~90 active + 14 closed) and VIC (~65 active), a Phase-0 validation plan with fixed go / kill thresholds, and the scaffolding for a web MVP (landing + screener + checklist + email + calendar feed, PWA).',
       result:
-        'Officially in Phase 0 (zero-cost validation) as of July 2026 — rule libraries and validation plan done, web MVP in progress; no launch or users yet. Deliberately kept lean until demand is proven.',
+        'Live at benefitsradar.com.au, in Phase 0 (zero-cost validation) — rule libraries, validation plan and web MVP all shipped; now validating real demand before scaling.',
     },
     zh: {
       tagline:
@@ -124,7 +126,7 @@ export const projects: Project[] = [
       how:
         '验证优先、零成本冷启动：先用免费的「福利日历」素材包 + 报名漏斗验证需求，达标才付费投放。真正的壁垒是一条持续侦测联邦 / 州规则变动与死线的「变更侦测管道」——每条规则都挂官方源 URL。目前已建成有来源背书的 NSW（约 90 活跃 + 14 已关闭）与 VIC（约 65 活跃）规则库、带固定通过 / 关停门槛的阶段 0 验证计划，以及网页 MVP 的骨架（landing + 筛查器 + 清单 + 邮件 + 日历订阅，PWA）。',
       result:
-        '2026 年 7 月正式进入阶段 0（零成本验证）——规则库与验证计划已完成，网页 MVP 开发中；尚未上线、暂无用户。刻意保持精简，等需求被证实再加码。',
+        '已上线 benefitsradar.com.au，处于阶段 0（零成本验证）——规则库、验证计划与网页 MVP 均已就绪；正在验证真实需求，达标才加码。',
     },
   },
   {
